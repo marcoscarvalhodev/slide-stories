@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 interface Elements {
-  opacityValue: number;
+  $opacity_value: number;
 }
 
 export const StyledSlideElements = styled.div<Elements>`
@@ -9,7 +9,7 @@ export const StyledSlideElements = styled.div<Elements>`
 
   & > * {
     grid-area: 1/1;
-    opacity: ${({opacityValue}) => opacityValue};
+    opacity: ${({$opacity_value}) => $opacity_value};
     visibility: none;
   }
 `
