@@ -4,17 +4,27 @@ import { StyledSlideElements } from "./style/SlideElements.styled";
 import { StyledSlideControls } from "./style/SlideControls.styled";
 import { contentImage, contentVideo } from "../content";
 import GlobalStyles from "./style/Global";
+import { SlideParameters } from "./SlideParameters";
 
 const SlideStories = () => {
   const [active, setActive] = React.useState(false);
+  const refContainer = React.useRef(null);
+  const refElements = React.useRef(null);
+  const refControls = React.useRef(null);
   
+
+  React.useEffect(() => {
+    if(refContainer.current && refElements.current && refControls.current) {
+      SlideParameters(refContainer.current, refElements.current, refControls.current)
+    }
+  })
 
   return (
     <>
       <GlobalStyles />
       <h1>Gorilla Stories</h1>
-      <StyledSlide>
-        <StyledSlideElements opacityValue={!active ? 0 : 1 }>
+      <StyledSlide ref={refContainer}>
+        <StyledSlideElements ref={refElements} $opacity_value={!active ? 0 : 1}>
           {contentImage.map((item, index) => {
             return (
               <img
@@ -38,7 +48,7 @@ const SlideStories = () => {
             );
           })}
         </StyledSlideElements>
-        <StyledSlideControls></StyledSlideControls>
+        <StyledSlideControls ref={refControls}></StyledSlideControls>
       </StyledSlide>
     </>
   );
