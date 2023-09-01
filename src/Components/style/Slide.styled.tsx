@@ -1,5 +1,5 @@
 import styled from "styled-components";
 
 export const StyledSlide = styled.div`
-  
+  display: grid;
 `

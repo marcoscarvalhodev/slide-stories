@@ -1,15 +1,19 @@
 import styled from "styled-components";
 
-interface Elements {
-  $opacity_value: number;
+interface Elemented {
+  $slide: number;
 }
 
-export const StyledSlideElements = styled.div<Elements>`
+export const StyledSlideElements = styled.div<Elemented>`
   display: grid;
-
+  grid-area: 1/1;
   & > * {
     grid-area: 1/1;
-    opacity: ${({$opacity_value}) => $opacity_value};
-    visibility: none;
+    opacity: 0;
   }
-`
+
+  & > :nth-child(${({ $slide }) => $slide}) {
+    opacity: 1;
+    visibility: visible;
+  }
+`;
