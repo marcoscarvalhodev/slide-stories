@@ -3,7 +3,6 @@ import { StyledSlideControls } from "./style/SlideControls.styled";
 import SlideTimeout from "./slideTimeout";
 
 interface propsControlled {
-  controls: React.MutableRefObject<null>;
   slide: number;
   slideState: React.Dispatch<React.SetStateAction<number>>;
   slideElements: HTMLElement | null;
@@ -11,21 +10,22 @@ interface propsControlled {
 }
 
 const SlideControls : React.FC<propsControlled> = ({
-  controls,
   slide,
   slideState,
   slideElements,
 
 }) => {
 
-  
-  React.useEffect(() => {
+  const refControls = React.useRef(null);
+
+
+  /*React.useEffect(() => {
     const slide = new SlideTimeout(() => nextSlide(), 6000);
 
     return () => {
       slide.clear()
     }
-  })  
+  })  */
   
 
   const elements = slideElements?.children
@@ -52,7 +52,7 @@ const SlideControls : React.FC<propsControlled> = ({
 
   
   return (
-    <StyledSlideControls ref={controls}>
+    <StyledSlideControls ref={refControls}>
       <button onPointerUp={prevSlide}>Previous Slide</button>
       <button onPointerUp={nextSlide}>Next Slide</button>
     </StyledSlideControls>
