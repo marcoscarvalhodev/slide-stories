@@ -12,14 +12,16 @@ const SlideStories = () => {
   const refElements = React.useRef(null);
   const refControls = React.useRef(null);
 
-  console.log(slideIndex)
+  console.log(slideIndex);
 
+   
   React.useEffect(() => {
     if (refContainer.current && refElements.current && refControls.current) {
       SlideParameters(
         refContainer.current,
         refElements.current,
-        refControls.current
+        refControls.current,
+      
       );
     }
   });
@@ -54,11 +56,12 @@ const SlideStories = () => {
           })}
         </StyledSlideElements>
 
-         <SlideControls
+        <SlideControls
           controls={refControls}
           slide={slideIndex}
           slideState={setSlideIndex}
           slideElements={refElements.current}
+          
         />
       </StyledSlide>
     </>
