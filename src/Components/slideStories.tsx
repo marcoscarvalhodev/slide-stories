@@ -10,7 +10,7 @@ import { SlideParameters } from "./SlideParameters";
 const SlideStories = () => {
   const [slideIndex, setSlideIndex] = React.useState(1);
   const refContainer = React.useRef(null);
-  const refElements = React.useRef(null);
+  const refElements = React.useRef<HTMLDivElement>(null);
   
 
   React.useEffect(() => {
@@ -52,11 +52,12 @@ const SlideStories = () => {
           })}
         </StyledSlideElements>
 
-        <SlideControls
+       {slideIndex && setSlideIndex && refElements && refContainer && <SlideControls
           slide={slideIndex}
           slideState={setSlideIndex}
-          slideElements={refElements.current}
-        />
+          slideElements={refElements}
+          slideContainer={refContainer.current}
+        />}
       </StyledSlide>
 
     </>
