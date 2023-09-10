@@ -8,14 +8,14 @@ interface slideInterface {
 }
 
 export default class Slide {
-  container?: Element | null;
-  elements?: Element[];
+  container: Element | null;
+  elements: Element[];
   time?: number;
   controls?: HTMLElement | null;
   timeout: SlideTimeout | null;
   constructor(
-    container?: Element | null,
-    elements?: Element[],
+    container: Element | null,
+    elements: Element[],
     time: number = 5000,
     controls?: HTMLElement | null
   ) {

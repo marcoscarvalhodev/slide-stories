@@ -9,7 +9,7 @@ import { SlideParameters } from "./SlideParameters";
 
 const SlideStories = () => {
   const [slideIndex, setSlideIndex] = React.useState(1);
-  const refContainer = React.useRef(null);
+  const refContainer = React.useRef<HTMLDivElement>(null);
   const refElements = React.useRef<HTMLDivElement>(null);
   
 
@@ -41,9 +41,7 @@ const SlideStories = () => {
           {contentVideo.map((item, index) => {
             return (
               <video
-                autoPlay
                 playsInline
-                muted
                 loop
                 key={item.id}
                 src={`./assets/videos/${item.srcVideo}`}
@@ -52,12 +50,12 @@ const SlideStories = () => {
           })}
         </StyledSlideElements>
 
-       {slideIndex && setSlideIndex && refElements && refContainer && <SlideControls
+       <SlideControls
           slide={slideIndex}
           slideState={setSlideIndex}
           slideElements={refElements}
-          slideContainer={refContainer.current}
-        />}
+          slideContainer={refContainer}
+        />
       </StyledSlide>
 
     </>
