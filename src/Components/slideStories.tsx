@@ -5,6 +5,7 @@ import { StyledSlideElements } from "./style/SlideElements.styled";
 import SlideControls from "./SlideControls";
 import { contentImage, contentVideo } from "../content";
 import { SlideParameters } from "./SlideParameters";
+import SlideElements from "./SlideElements";
 
 
 const SlideStories = () => {
@@ -12,7 +13,7 @@ const SlideStories = () => {
   const refContainer = React.useRef<HTMLDivElement>(null);
   const refElements = React.useRef<HTMLDivElement>(null);
   
-
+  
   React.useEffect(() => {
     if (refContainer.current && refElements.current) {
       SlideParameters(
@@ -20,42 +21,25 @@ const SlideStories = () => {
         refElements.current
       );
     }
+
   });
+
 
   return (
     <>
       <GlobalStyles />
       <h1>Gorilla Stories</h1>
       <StyledSlide ref={refContainer}>
-        <StyledSlideElements ref={refElements} $slide={slideIndex}>
-          {contentImage.map((item, index) => {
-            return (
-              <img
-                key={item.id}
-                src={`./assets/images/${item.srcImage}`}
-                alt={item.altImage}
-                title={item.altImage}
-              />
-            );
-          })}
-          {contentVideo.map((item, index) => {
-            return (
-              <video
-                playsInline
-                loop
-                key={item.id}
-                src={`./assets/videos/${item.srcVideo}`}
-              ></video>
-            );
-          })}
-        </StyledSlideElements>
 
-       <SlideControls
+        <SlideElements ref={refElements} slide={slideIndex}/>
+
+       {refElements && <SlideControls
           slide={slideIndex}
           slideState={setSlideIndex}
           slideElements={refElements}
           slideContainer={refContainer}
-        />
+        />}
+
       </StyledSlide>
 
     </>
