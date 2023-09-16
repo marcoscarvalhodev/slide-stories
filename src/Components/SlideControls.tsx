@@ -25,7 +25,7 @@ const SlideControls: React.FC<propsControlled> = ({
   const indexElement = React.useRef<Element | undefined>(undefined);
   const [timeThumb, setTimeThumb] = React.useState<number>();
 
-  let paused = false;
+  let paused = false; //nesse caso o recomendado é usar um let ou mesmo um ref pois um state atualizaria o componente a todo momento e não funcionaria.
 
   React.useEffect(() => {
     if (slideElements.current) {
@@ -72,8 +72,8 @@ const SlideControls: React.FC<propsControlled> = ({
   };
 
   const autoSlideVideo = <T extends HTMLVideoElement>(video: T) => {
-    video.play();
     video.muted = true;
+    video.play();
 
     if (indexElement.current instanceof HTMLVideoElement) {
       indexElement.current.currentTime = 0;
