@@ -1,12 +1,12 @@
 import React from "react";
 import { StyledSlideThumbs } from "./style/SlideThumbs.styled";
+import SlideThumbTimeout from "./SlideThumbTimeout";
 
 interface thumbsProps {
   thumbs: React.RefObject<HTMLDivElement>;
   thumbsContainer: React.RefObject<HTMLDivElement>;
   slide: number;
   timeThumb: number | undefined;
-  thumbPause: boolean;
 }
 
 const SlideThumbs = ({
@@ -14,12 +14,12 @@ const SlideThumbs = ({
   thumbsContainer,
   slide,
   timeThumb,
-  thumbPause,
+  
 }: thumbsProps) => {
   const [thumbState, setThumbState] = React.useState<number[]>([]);
   const refThumb = React.useRef<HTMLDivElement | null>(null);
   const [thumbElement, setThumbElement] = React.useState<HTMLDivElement>();
-  const thumbRef = React.useRef<any>();
+  const thumbRef = React.useRef<SlideThumbTimeout | null>(null);
   const [thumbAlt, setThumbAlt] = React.useState<boolean>(false);
 
   React.useEffect(() => {
@@ -33,29 +33,28 @@ const SlideThumbs = ({
         });
         Array.from(thumbElement.children)[slide - 1].classList.add("active");
       }
-      /*console.log(Array.from(thumbConst.children)[2])*/
+      
     }
-  }, [slide, thumbs, thumbElement, timeThumb, thumbPause]);
-
-  function thumbDown() {
-    setTimeout(() => setThumbAlt(true), 300);
-  }
-
-  function thumbUp() {
-    setThumbAlt(false);
-  }
+  }, [slide, thumbs, thumbElement]);
+  
+  const thumbDown = React.useCallback(() => {
+    thumbRef.current = new SlideThumbTimeout(() => setThumbAlt(true), 300);
+    
+    
+  }, [])
 
   React.useEffect(() => {
-    thumbsContainer.current?.addEventListener("pointerdown", thumbDown);
-    thumbsContainer.current?.addEventListener("pointerup", thumbUp);
+    return () => thumbRef.current?.clear();
+  })
 
-    
+  function thumbUp() {
+    setThumbAlt(false)
+  }
 
-    
-  }, [thumbsContainer, setThumbState]);
+  thumbsContainer.current?.addEventListener("pointerdown", thumbDown);
+  thumbsContainer.current?.addEventListener("pointerup", thumbUp);
 
-  console.log(thumbAlt);
-
+  console.log(thumbAlt)
   React.useEffect(() => {
     if (thumbs.current) {
       const thumbsArray = [];
@@ -72,9 +71,7 @@ const SlideThumbs = ({
         thumbState.map((item) => {
           return (
             <span key={item}>
-              <span
-                className={`thumb-item ${thumbAlt ? "paused" : ""}`}
-              ></span>
+              <span className={`thumb-item ${thumbAlt ? "paused" : ""}`}></span>
             </span>
           );
         })}

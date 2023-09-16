@@ -25,9 +25,7 @@ const SlideControls: React.FC<propsControlled> = ({
   const indexElement = React.useRef<Element | undefined>(undefined);
   const [timeThumb, setTimeThumb] = React.useState<number>();
 
-  let paused = false; //nesse caso o recomendado é usar um let ou mesmo um ref pois um state atualizaria o componente a todo momento e não funcionaria.
-  const refThumbPause = React.useRef<boolean>(false);
-  const [thumbPause, setThumbPause] = React.useState<boolean>(false);
+  let paused = false;
 
   React.useEffect(() => {
     if (slideElements.current) {
@@ -37,32 +35,27 @@ const SlideControls: React.FC<propsControlled> = ({
     }
   }, [slideContainer, slideElements, slide]);
 
-  const pauseSlide = () => {
-    
-    pausedTimeout.current = new SlideTimeout(() => {
-      refTimeout.current?.pause();
-      paused = true;
-      
-      if (indexElement.current instanceof HTMLVideoElement) {
-        indexElement.current.pause();
-      }
-    }, 300);
-    
-  };
-
   const continueSlide = () => {
     pausedTimeout.current?.clear();
     if (paused) {
       paused = false;
-      
+
       refTimeout.current?.continue();
       if (indexElement.current instanceof HTMLVideoElement)
         indexElement.current.play();
     }
-    
   };
 
-  
+  const pauseSlide = () => {
+    pausedTimeout.current = new SlideTimeout(() => {
+      refTimeout.current?.pause();
+      paused = true;
+
+      if (indexElement.current instanceof HTMLVideoElement) {
+        indexElement.current.pause();
+      }
+    }, 300);
+  };
 
   const prevSlide = () => {
     slideReplace.current?.prevSlide({ slide, slideState, paused });
@@ -79,8 +72,8 @@ const SlideControls: React.FC<propsControlled> = ({
   };
 
   const autoSlideVideo = <T extends HTMLVideoElement>(video: T) => {
-    video.muted = true;
     video.play();
+    video.muted = true;
 
     if (indexElement.current instanceof HTMLVideoElement) {
       indexElement.current.currentTime = 0;
@@ -123,7 +116,6 @@ const SlideControls: React.FC<propsControlled> = ({
         thumbsContainer={slideContainer}
         slide={slide}
         timeThumb={timeThumb}
-        thumbPause={thumbPause}
       />
     </>
   );
