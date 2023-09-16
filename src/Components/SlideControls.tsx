@@ -2,6 +2,7 @@ import React from "react";
 import { StyledSlideControls } from "./style/SlideControls.styled";
 import SlideTimeout from "./slideTimeout";
 import Slide from "./Slide";
+import SlideThumbs from "./SlideThumbs";
 
 interface propsControlled {
   slide: number;
@@ -21,12 +22,12 @@ const SlideControls: React.FC<propsControlled> = ({
   const pausedTimeout = React.useRef<SlideTimeout | null>(null);
 
   const slideReplace = React.useRef<Slide | null>(null);
-  const elements = React.useRef<Element[] | undefined>(undefined)
   const indexElement = React.useRef<Element | undefined>(undefined);
-
-  console.log(indexElement.current);
+  const [timeThumb, setTimeThumb] = React.useState<number>();
 
   let paused = false; //nesse caso o recomendado é usar um let ou mesmo um ref pois um state atualizaria o componente a todo momento e não funcionaria.
+  const refThumbPause = React.useRef<boolean>(false);
+  const [thumbPause, setThumbPause] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     if (slideElements.current) {
@@ -37,23 +38,31 @@ const SlideControls: React.FC<propsControlled> = ({
   }, [slideContainer, slideElements, slide]);
 
   const pauseSlide = () => {
+    
     pausedTimeout.current = new SlideTimeout(() => {
       refTimeout.current?.pause();
       paused = true;
-      if (indexElement.current instanceof HTMLVideoElement)
+      
+      if (indexElement.current instanceof HTMLVideoElement) {
         indexElement.current.pause();
+      }
     }, 300);
+    
   };
 
   const continueSlide = () => {
     pausedTimeout.current?.clear();
     if (paused) {
       paused = false;
+      
       refTimeout.current?.continue();
       if (indexElement.current instanceof HTMLVideoElement)
         indexElement.current.play();
     }
+    
   };
+
+  
 
   const prevSlide = () => {
     slideReplace.current?.prevSlide({ slide, slideState, paused });
@@ -65,10 +74,11 @@ const SlideControls: React.FC<propsControlled> = ({
 
   const autoSlide = (time: number) => {
     refTimeout.current = new SlideTimeout(() => nextSlide(), time);
+
+    setTimeThumb(time);
   };
 
   const autoSlideVideo = <T extends HTMLVideoElement>(video: T) => {
-    console.log(video);
     video.muted = true;
     video.play();
 
@@ -108,6 +118,13 @@ const SlideControls: React.FC<propsControlled> = ({
         <button onPointerUp={nextSlide}>Next Slide</button>
       </StyledSlideControls>
 
+      <SlideThumbs
+        thumbs={slideElements}
+        thumbsContainer={slideContainer}
+        slide={slide}
+        timeThumb={timeThumb}
+        thumbPause={thumbPause}
+      />
     </>
   );
 };

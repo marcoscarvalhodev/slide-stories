@@ -8,6 +8,7 @@ export default class SlideTimeout {
     this.handler = handler;
     this.start = Date.now();
     this.timeLeft = time;
+    
   }
 
   clear() {
@@ -19,11 +20,14 @@ export default class SlideTimeout {
     this.timeLeft = this.timeLeft - passed;
     this.clear();
     console.log(this.timeLeft)
+    return true;
   }
 
   continue() {
     this.clear();
     this.id = setTimeout(this.handler, this.timeLeft)
     this.start = Date.now();
+
+    return false;
   }
 }
